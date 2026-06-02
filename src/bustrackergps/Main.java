@@ -180,5 +180,20 @@ public class Main {
         
         
     }
+        UpcomingStops route = new UpcomingStops();
+
+        route.addStop(new BusStopGPS("Library",3.120000,101.650000));
+
+        route.addStop(new BusStopGPS("Faculty",3.121500,101.651500));
+
+        route.addStop(new BusStopGPS("College",3000,101.653000));
+
+        route.addStop(new BusStopGPS("Sports Complex",3.124500,101.655000));
+
+        route.displayQueue();
+
+        GPSSimulator gps = new GPSSimulator("Bus T818",3.119000,101.649000,route);
+
+        gps.startJourney();
 }
 }
