@@ -5,25 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-/**
- * MainDashboardSwing.java
- * ─────────────────────────────────────────────────────────────────────────────
- * Swing version of the original JavaFX MainDashboard.
- *
- * Integrates all members' classes (same as the JavaFX version):
- *   Member 1 : RouteGraph, BusStop, BusRoute
- *   Member 2 : ScheduleMap, BusSchedule
- *   Member 3 : GPSSimulator, UpcomingStops, BusStopGPS
- *   Member 4 : ETACalculator, ArrivalTracker
- *
- * UI Features:
- *   - Route selector (T1, T2, T3)
- *   - Stop selector (populated from chosen route's stops)
- *   - Live ETA display with ranked bus arrivals (auto-refreshes every 5s)
- *   - Schedule info panel
- *   - GPS simulation trigger per bus (console output)
- * ─────────────────────────────────────────────────────────────────────────────
- */
 public class MainDashboard {
 
     // ── Shared data structures (built once, reused across UI actions) ─────────
@@ -44,7 +25,7 @@ public class MainDashboard {
     private javax.swing.Timer autoRefreshTimer;
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Main entry point (Swing style)
+    //  Main entry point 
     // ─────────────────────────────────────────────────────────────────────────
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -54,7 +35,7 @@ public class MainDashboard {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  STEP 8 – System Integration (identical to JavaFX version)
+    //  System Integration 
     // ─────────────────────────────────────────────────────────────────────────
     private void initDataStructures() {
         // ── Member 1: Build the RouteGraph (nodes + edges) ────────────────────
@@ -104,7 +85,7 @@ public class MainDashboard {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  Create and show the Swing window (replaces JavaFX start() + buildUI)
+    //  GUI
     // ─────────────────────────────────────────────────────────────────────────
     private void createAndShowGUI() {
         initDataStructures();
@@ -304,7 +285,7 @@ public class MainDashboard {
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    //  EVENT HANDLERS (logic kept as close as possible to JavaFX version)
+    //  EVENT HANDLERS 
     // ─────────────────────────────────────────────────────────────────────────
 
     /** Called when the user selects a route — populates the stop dropdown. */
