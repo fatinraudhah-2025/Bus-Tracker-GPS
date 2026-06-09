@@ -4,9 +4,12 @@
  */
 package bustrackergps;
 
+import java.util.function.Consumer;
+
 /**
  *
- * @author User
+ * GPSSimulator can output updates either to System.out (existing behavior)
+ * or to a provided Consumer<String> for UI display.
  */
 public class GPSSimulator {
     private String busId;
@@ -15,69 +18,73 @@ public class GPSSimulator {
     private UpcomingStops route;
 
     public GPSSimulator(String busId, double startLat, double startLon, UpcomingStops route) {
-        
         this.busId = busId;
         this.currentLatitude = startLat;
         this.currentLongitude = startLon;
         this.route = route;
     }
 
+    /**
+     * Backwards-compatible: prints to System.out
+     */
     public void startJourney() {
+        startJourney(System.out::println);
+    }
 
-        System.out.println("Starting GPS Simulation for bus " + busId);
+    /**
+     * Start the journey and emit textual updates via the provided logger.
+     */
+    public void startJourney(Consumer<String> logger) {
+        logger.accept("Starting GPS Simulation for bus " + busId);
 
         while (route.hasStops()) {
-
             BusStopGPS nextStop = route.getNextStop();
+            logger.accept("\nTravelling to: " + nextStop.getStopName());
 
-            System.out.println("\nTravelling to: " + nextStop.getStopName());
+            moveBus(nextStop, logger);
 
-            moveBus(nextStop);
-
-            System.out.println("Arrived at: " + nextStop.getStopName());
+            logger.accept("Arrived at: " + nextStop.getStopName());
 
             route.removeCurrentStop();
 
             if (route.hasStops()) {
-                System.out.println("Next Stop: " + route.getNextStop().getStopName());
-            }
-            else {
-                System.out.println("No more stops remaining");
+                logger.accept("Next Stop: " + route.getNextStop().getStopName());
+            } else {
+                logger.accept("No more stops remaining");
             }
         }
 
-        System.out.println("\n" + busId + "has succesfully completed the entire route");
+        logger.accept("\n" + busId + " has successfully completed the entire route");
     }
 
-    private void moveBus(BusStopGPS destination) {
-
+    private void moveBus(BusStopGPS destination, Consumer<String> logger) {
         double destinationLat = destination.getLatitude();
         double destinationLon = destination.getLongitude();
 
         int updates = 5;
 
         double latStep = (destinationLat - currentLatitude) / updates;
-
         double lonStep = (destinationLon - currentLongitude) / updates;
-            
-        for (int i = 1; i <= updates; i++) { 
+
+        for (int i = 1; i <= updates; i++) {
             if (i == updates) {
-        currentLatitude = destinationLat;
-        currentLongitude = destinationLon; 
-            } else { 
+                currentLatitude = destinationLat;
+                currentLongitude = destinationLon;
+            } else {
                 currentLatitude += latStep;
-                currentLongitude += lonStep; 
+                currentLongitude += lonStep;
             }
-        
-            System.out.printf("GPS Update %d -> Lat: %.6f | Lon: %.6f%n", i, currentLatitude, currentLongitude);
+
+            logger.accept(String.format("GPS Update %d -> Lat: %.6f | Lon: %.6f", i, currentLatitude, currentLongitude));
 
             try {
                 Thread.sleep(1000);
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException e) {
+                logger.accept("Simulation interrupted: " + e.toString());
+                Thread.currentThread().interrupt();
+                return;
             }
         }
-    } 
+    }
 }
 

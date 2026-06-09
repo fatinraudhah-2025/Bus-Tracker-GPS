@@ -111,16 +111,9 @@ public class Main {
 
         //System.out.println("\n[T1] Stop at index 3 : " + routeT1.getStopAt(3));
 
-        int libIndex = routeT2.indexOf("S03");
-        //System.out.println("[T2] 'Central Library' is stop #" + (libIndex + 1)
-                           //+ " (index " + libIndex + ")");
-
-        BusStop found = graph.getStop("S10");
-        //System.out.println("[Graph] Direct lookup S10 : " + found);
-
         //System.out.println("\n[Graph] Neighbours of Central Library (S03):");
         for (RouteGraph.Edge edge : graph.getNeighbours("S03")) {
-            //System.out.println("         --> " + edge);
+            System.out.println("         --> " + edge);
         }
 
         //System.out.println("\n==============================================");
